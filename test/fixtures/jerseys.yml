@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  club: MyString
+  season: MyString
+  size: MyString
+  price: 9.99
+  description: MyText
+
+two:
+  title: MyString
+  club: MyString
+  season: MyString
+  size: MyString
+  price: 9.99
+  description: MyText

@@ -1,0 +1,2 @@
+module JerseysHelper
+end
