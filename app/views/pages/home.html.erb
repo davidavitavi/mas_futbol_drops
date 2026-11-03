@@ -1,4 +1,57 @@
-<div>
-  <h1 class="font-bold text-4xl">Pages#home</h1>
-  <p>Find me in app/views/pages/home.html.erb</p>
-</div>
+<!-- Hero -->
+<section class="rounded-3xl bg-zinc-950 text-white px-8 py-16 md:px-16 md:py-24 relative overflow-hidden">
+  <div class="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl"></div>
+  <div class="absolute -left-10 -bottom-24 h-72 w-72 rounded-full bg-amber-400/10 blur-3xl"></div>
+
+  <div class="relative max-w-2xl">
+    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">Mas Futbol</p>
+    <h1 class="mt-4 text-5xl md:text-6xl font-black leading-tight">
+      Classic kits.<br>
+      <span class="text-amber-400">New drops.</span>
+    </h1>
+    <p class="mt-6 text-lg text-zinc-300">
+      Retro and replica football jerseys from the clubs and eras that made the game.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <%= link_to "Shop the drops", jerseys_path,
+            class: "rounded-full bg-emerald-500 px-6 py-3 font-bold text-zinc-950 hover:bg-emerald-400 transition" %>
+      <%= link_to "About us", about_path,
+            class: "rounded-full border border-zinc-700 px-6 py-3 font-bold hover:border-zinc-400 transition" %>
+    </div>
+  </div>
+</section>
+
+<!-- Latest drops -->
+<section class="mt-16">
+  <div class="flex items-end justify-between">
+    <h2 class="text-3xl font-black">Latest drops</h2>
+    <%= link_to "View all →", jerseys_path, class: "font-semibold text-emerald-600 hover:underline" %>
+  </div>
+
+  <% if @jerseys.any? %>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @jerseys.each do |jersey| %>
+        <%= link_to jersey_path(jersey), class: "group block rounded-2xl border border-zinc-200 p-6 hover:border-emerald-500 hover:shadow-lg transition" do %>
+          <div class="flex h-40 items-center justify-center rounded-xl bg-zinc-100 text-5xl group-hover:bg-emerald-50 transition">
+            👕
+          </div>
+          <p class="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">
+            <%= [jersey.club, jersey.season].compact_blank.join(" · ") %>
+          </p>
+          <h3 class="mt-1 text-lg font-bold group-hover:text-emerald-600"><%= jersey.title %></h3>
+          <div class="mt-3 flex items-center justify-between">
+            <span class="text-xl font-black"><%= number_to_currency(jersey.price) %></span>
+            <% if jersey.size.present? %>
+              <span class="rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold"><%= jersey.size %></span>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="mt-8 rounded-2xl border-2 border-dashed border-zinc-300 p-12 text-center">
+      <p class="text-zinc-500">No jerseys yet.</p>
+      <%= link_to "Add your first jersey", new_jersey_path, class: "mt-4 inline-block font-bold text-emerald-600 hover:underline" %>
+    </div>
+  <% end %>
+</section>
