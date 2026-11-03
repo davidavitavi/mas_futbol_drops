@@ -60,7 +60,7 @@ class JerseysController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_jersey
-      @jersey = Jersey.find(params.expect(:id))
+     @jersey = Jersey.friendly.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
