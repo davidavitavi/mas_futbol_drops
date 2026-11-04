@@ -69,4 +69,6 @@ end
 
 gem "friendly_id", "~> 5.7"
 
-gem "faker", "~> 3.8", groups: [:development, :test]
+gem "faker", "~> 3.8", groups: [ :development, :test ]
+
+gem "devise", "~> 5.0"

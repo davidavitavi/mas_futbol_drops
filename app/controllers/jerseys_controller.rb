@@ -1,7 +1,9 @@
 class JerseysController < ApplicationController
+    before_action :authenticate_user!, except: %i[index show]
+  before_action :require_admin!, except: %i[index show]
   before_action :set_jersey, only: %i[ show edit update destroy ]
 
-  # GET /jerseys or /jerseys.json
+# GET /jerseys or /jerseys.json
 def index
   @jerseys = Jersey.order(created_at: :desc)
 

@@ -7,8 +7,8 @@ class Jersey < ApplicationRecord
   def slug_candidates
     [
       :title,
-      [:title, :season],
-      [:title, :club, :season]
+      [ :title, :season ],
+      [ :title, :club, :season ]
     ]
   end
 

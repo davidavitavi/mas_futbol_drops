@@ -12,6 +12,16 @@
     <div class="flex items-center gap-6 text-sm font-semibold">
       <%= link_to "Shop", jerseys_path, class: "hover:text-emerald-400 transition" %>
       <%= link_to "About", about_path, class: "hover:text-emerald-400 transition" %>
+
+      <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to "+ New jersey", new_jersey_path, class: "text-emerald-400 hover:text-emerald-300" %>
+        <% end %>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete,
+              class: "hover:text-emerald-400 transition cursor-pointer" %>
+      <% else %>
+        <%= link_to "Sign in", new_user_session_path, class: "hover:text-emerald-400 transition" %>
+      <% end %>
     </div>
   </div>
 </nav>
