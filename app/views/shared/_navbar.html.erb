@@ -1,0 +1,17 @@
+<nav class="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur text-white">
+  <div class="container mx-auto flex flex-wrap items-center justify-between gap-4 px-5 py-4">
+    <%= link_to root_path, class: "text-xl font-black tracking-tight" do %>
+      MAS <span class="text-emerald-400">FUTBOL</span>
+    <% end %>
+
+    <%= form_with url: jerseys_path, method: :get, class: "order-last w-full md:order-none md:w-auto md:flex-1 md:max-w-sm" do |f| %>
+      <%= f.search_field :query, value: params[:query], placeholder: "Search club or jersey…",
+            class: "w-full rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none" %>
+    <% end %>
+
+    <div class="flex items-center gap-6 text-sm font-semibold">
+      <%= link_to "Shop", jerseys_path, class: "hover:text-emerald-400 transition" %>
+      <%= link_to "About", about_path, class: "hover:text-emerald-400 transition" %>
+    </div>
+  </div>
+</nav>

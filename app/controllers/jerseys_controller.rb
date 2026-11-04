@@ -2,13 +2,14 @@ class JerseysController < ApplicationController
   before_action :set_jersey, only: %i[ show edit update destroy ]
 
   # GET /jerseys or /jerseys.json
-  def index
-    @jerseys = Jersey.all
-  end
+def index
+  @jerseys = Jersey.order(created_at: :desc)
 
-  # GET /jerseys/1 or /jerseys/1.json
-  def show
+  if params[:query].present?
+    query = "%#{Jersey.sanitize_sql_like(params[:query])}%"
+    @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
   end
+end
 
   # GET /jerseys/new
   def new
