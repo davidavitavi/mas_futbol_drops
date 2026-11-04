@@ -68,3 +68,5 @@ group :test do
 end
 
 gem "friendly_id", "~> 5.7"
+
+gem "faker", "~> 3.8", groups: [:development, :test]
