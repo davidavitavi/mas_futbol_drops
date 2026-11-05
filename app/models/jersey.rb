@@ -1,6 +1,7 @@
 class Jersey < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
+    belongs_to :category, optional: true
 
   validates :title, presence: true
 

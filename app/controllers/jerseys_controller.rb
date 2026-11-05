@@ -3,15 +3,21 @@ class JerseysController < ApplicationController
   before_action :require_admin!, except: %i[index show]
   before_action :set_jersey, only: %i[ show edit update destroy ]
 
-# GET /jerseys or /jerseys.json
-def index
-  @jerseys = Jersey.order(created_at: :desc)
+  # GET /jerseys or /jerseys.json
+  def index
+    @categories = Category.order(:name)
+    @jerseys = Jersey.includes(:category).order(created_at: :desc)
 
-  if params[:query].present?
-    query = "%#{Jersey.sanitize_sql_like(params[:query])}%"
-    @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
+    if params[:category].present?
+      @category = Category.friendly.find(params[:category])
+      @jerseys = @jerseys.where(category: @category)
+    end
+
+    if params[:query].present?
+      query = "%#{Jersey.sanitize_sql_like(params[:query])}%"
+      @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
+    end
   end
-end
 
   # GET /jerseys/new
   def new
@@ -68,6 +74,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def jersey_params
-      params.expect(jersey: [ :title, :club, :season, :size, :price, :description ])
+      params.expect(jersey: [ :title, :club, :season, :size, :price, :description, :category_id ])
     end
 end
