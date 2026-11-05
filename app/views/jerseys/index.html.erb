@@ -7,8 +7,9 @@
 
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Jerseys</h1>
-    <%= link_to "New jersey", new_jersey_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-  </div>
+   <% if current_user&.admin? %>
+  <%= link_to "New jersey", new_jersey_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+<% end %>  </div>
 
   <div id="jerseys" class="min-w-full divide-y divide-gray-200 space-y-5">
     <% if @jerseys.any? %>
