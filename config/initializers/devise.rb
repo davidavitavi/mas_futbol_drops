@@ -288,6 +288,11 @@ Devise.setup do |config|
                   Rails.application.credentials.dig(:github, :client_id),
                   Rails.application.credentials.dig(:github, :client_secret),
                   scope: "user:email"
+
+
+                    config.omniauth :google_oauth2,
+                  Rails.application.credentials.dig(:google, :client_id),
+                  Rails.application.credentials.dig(:google, :client_secret)
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
   # is mountable, there are some extra configurations to be taken into account.
