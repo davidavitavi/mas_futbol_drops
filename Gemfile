@@ -72,3 +72,9 @@ gem "friendly_id", "~> 5.7"
 gem "faker", "~> 3.8", groups: [ :development, :test ]
 
 gem "devise", "~> 5.0"
+
+gem "omniauth-github", "~> 2.0"
+gem "omniauth-google-oauth2", "~> 1.2"
+gem "omniauth-rails_csrf_protection", "~> 2.0"
+
+gem "omniauth", "~> 2.3"
