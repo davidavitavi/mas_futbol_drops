@@ -23,13 +23,20 @@
     <%= javascript_importmap_tags %>
   </head>
   
-<body class="flex min-h-screen flex-col bg-white text-zinc-900">
-  <%= render "shared/navbar" %>
+  <body class="flex min-h-screen flex-col bg-white text-zinc-900">
+    <%= render "shared/navbar" %>
 
-  <main class="container mx-auto flex-1 px-5 py-10">
-    <%= yield %>
-  </main>
+    <main class="container mx-auto flex-1 px-5 py-10">
+      <% if notice.present? %>
+        <p class="mb-6 rounded-xl bg-emerald-50 px-4 py-3 font-medium text-emerald-700"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="mb-6 rounded-xl bg-red-50 px-4 py-3 font-medium text-red-700"><%= alert %></p>
+      <% end %>
 
-  <%= render "shared/footer" %>
-</body>
+      <%= yield %>
+    </main>
+
+    <%= render "shared/footer" %>
+  </body>
 </html>

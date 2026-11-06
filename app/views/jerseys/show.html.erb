@@ -1,8 +1,6 @@
 <% content_for :title, @jersey.title %>
 
-<% if notice.present? %>
-  <p class="mb-6 rounded-xl bg-emerald-50 px-4 py-3 font-medium text-emerald-700"><%= notice %></p>
-<% end %>
+
 
 <nav class="flex flex-wrap items-center gap-2 text-sm text-zinc-500">
   <%= link_to "Shop", jerseys_path, class: "hover:text-emerald-600" %>

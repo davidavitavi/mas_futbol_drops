@@ -1,9 +1,10 @@
 <% content_for :title, "New jersey" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New jersey</h1>
+<div class="mx-auto max-w-2xl">
+  <h1 class="text-4xl font-black">New jersey</h1>
+  <p class="mt-2 text-zinc-500">Add a new drop to the shop.</p>
 
-  <%= render "form", jersey: @jersey %>
-
-  <%= link_to "Back to jerseys", jerseys_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="mt-8 rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+    <%= render "form", jersey: @jersey %>
+  </div>
 </div>

@@ -1,9 +1,11 @@
-<%= form_with(model: jersey, class: "contents") do |form| %>
-  <% if jersey.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(jersey.errors.count, "error") %> prohibited this jersey from being saved:</h2>
+<% input = "mt-2 block w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20" %>
+<% label = "block text-sm font-semibold" %>
 
-      <ul class="list-disc ml-6">
+<%= form_with(model: jersey, class: "space-y-6") do |form| %>
+  <% if jersey.errors.any? %>
+    <div id="error_explanation" class="rounded-2xl bg-red-50 p-5 text-red-700">
+      <p class="font-bold"><%= pluralize(jersey.errors.count, "problem") %> to fix before saving:</p>
+      <ul class="mt-2 list-disc pl-5 text-sm">
         <% jersey.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,37 +13,49 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:title].none?, "border-red-400 focus:outline-red-600": jersey.errors[:title].any?}] %>
+  <div>
+    <%= form.label :title, class: label %>
+    <%= form.text_field :title, placeholder: "e.g. Barcelona Home 2015", class: input %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :club %>
-    <%= form.text_field :club, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:club].none?, "border-red-400 focus:outline-red-600": jersey.errors[:club].any?}] %>
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div>
+      <%= form.label :club, class: label %>
+      <%= form.text_field :club, placeholder: "e.g. FC Barcelona", class: input %>
+    </div>
+    <div>
+      <%= form.label :category_id, "League", class: label %>
+      <%= form.collection_select :category_id, Category.order(:name), :id, :name,
+            { include_blank: "No league" }, class: input %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :season %>
-    <%= form.text_field :season, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:season].none?, "border-red-400 focus:outline-red-600": jersey.errors[:season].any?}] %>
+  <div class="grid gap-6 sm:grid-cols-3">
+    <div>
+      <%= form.label :season, class: label %>
+      <%= form.text_field :season, placeholder: "2015/16", class: input %>
+    </div>
+    <div>
+      <%= form.label :size, class: label %>
+      <%= form.select :size, %w[XS S M L XL XXL], { include_blank: "Select" }, class: input %>
+    </div>
+    <div>
+      <%= form.label :price, class: label %>
+      <div class="relative">
+        <span class="pointer-events-none absolute left-4 top-1/2 mt-1 -translate-y-1/2 text-zinc-500">$</span>
+        <%= form.number_field :price, step: 0.01, min: 0, placeholder: "89.99", class: "#{input} pl-8" %>
+      </div>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :size %>
-    <%= form.text_field :size, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:size].none?, "border-red-400 focus:outline-red-600": jersey.errors[:size].any?}] %>
+  <div>
+    <%= form.label :description, class: label %>
+    <%= form.textarea :description, rows: 5, placeholder: "Condition, fit, any flaws, what makes it special…", class: input %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :price %>
-    <%= form.text_field :price, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:price].none?, "border-red-400 focus:outline-red-600": jersey.errors[:price].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": jersey.errors[:description].none?, "border-red-400 focus:outline-red-600": jersey.errors[:description].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex flex-wrap items-center gap-4 border-t border-zinc-200 pt-6">
+    <%= form.submit class: "cursor-pointer rounded-full bg-emerald-600 px-8 py-3 font-bold text-white transition hover:bg-emerald-500" %>
+    <%= link_to "Cancel", jersey.persisted? ? jersey_path(jersey) : jerseys_path,
+          class: "font-semibold text-zinc-500 hover:text-zinc-900" %>
   </div>
 <% end %>
