@@ -22,6 +22,7 @@
 </section>
 
 <!-- Latest drops -->
+<!-- Latest drops -->
 <section class="mt-16">
   <div class="flex items-end justify-between">
     <h2 class="text-3xl font-black">Latest drops</h2>
@@ -30,28 +31,14 @@
 
   <% if @jerseys.any? %>
     <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <% @jerseys.each do |jersey| %>
-        <%= link_to jersey_path(jersey), class: "group block rounded-2xl border border-zinc-200 p-6 hover:border-emerald-500 hover:shadow-lg transition" do %>
-          <div class="flex h-40 items-center justify-center rounded-xl bg-zinc-100 text-5xl group-hover:bg-emerald-50 transition">
-            👕
-          </div>
-          <p class="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">
-            <%= [jersey.club, jersey.season].compact_blank.join(" · ") %>
-          </p>
-          <h3 class="mt-1 text-lg font-bold group-hover:text-emerald-600"><%= jersey.title %></h3>
-          <div class="mt-3 flex items-center justify-between">
-            <span class="text-xl font-black"><%= number_to_currency(jersey.price) %></span>
-            <% if jersey.size.present? %>
-              <span class="rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold"><%= jersey.size %></span>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
+      <%= render partial: "jerseys/card", collection: @jerseys, as: :jersey %>
     </div>
   <% else %>
     <div class="mt-8 rounded-2xl border-2 border-dashed border-zinc-300 p-12 text-center">
       <p class="text-zinc-500">No jerseys yet.</p>
-      <%= link_to "Add your first jersey", new_jersey_path, class: "mt-4 inline-block font-bold text-emerald-600 hover:underline" %>
+      <% if current_user&.admin? %>
+        <%= link_to "Add your first jersey", new_jersey_path, class: "mt-4 inline-block font-bold text-emerald-600 hover:underline" %>
+      <% end %>
     </div>
   <% end %>
 </section>

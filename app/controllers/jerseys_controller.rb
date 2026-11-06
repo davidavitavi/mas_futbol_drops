@@ -1,9 +1,9 @@
 class JerseysController < ApplicationController
-    before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index show]
   before_action :require_admin!, except: %i[index show]
-  before_action :set_jersey, only: %i[ show edit update destroy ]
+  before_action :set_jersey, only: %i[show edit update destroy]
 
-  # GET /jerseys or /jerseys.json
+  # GET /jerseys
   def index
     @categories = Category.order(:name)
     @jerseys = Jersey.includes(:category).order(created_at: :desc)
@@ -19,16 +19,25 @@ class JerseysController < ApplicationController
     end
   end
 
+  # GET /jerseys/:id
+  def show
+    @related = Jersey.includes(:category)
+                     .where(category_id: @jersey.category_id)
+                     .where.not(id: @jersey.id)
+                     .order(created_at: :desc)
+                     .limit(3)
+  end
+
   # GET /jerseys/new
   def new
     @jersey = Jersey.new
   end
 
-  # GET /jerseys/1/edit
+  # GET /jerseys/:id/edit
   def edit
   end
 
-  # POST /jerseys or /jerseys.json
+  # POST /jerseys
   def create
     @jersey = Jersey.new(jersey_params)
 
@@ -43,7 +52,7 @@ class JerseysController < ApplicationController
     end
   end
 
-  # PATCH/PUT /jerseys/1 or /jerseys/1.json
+  # PATCH/PUT /jerseys/:id
   def update
     respond_to do |format|
       if @jersey.update(jersey_params)
@@ -56,7 +65,7 @@ class JerseysController < ApplicationController
     end
   end
 
-  # DELETE /jerseys/1 or /jerseys/1.json
+  # DELETE /jerseys/:id
   def destroy
     @jersey.destroy!
 
@@ -67,13 +76,12 @@ class JerseysController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_jersey
-     @jersey = Jersey.friendly.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def jersey_params
-      params.expect(jersey: [ :title, :club, :season, :size, :price, :description, :category_id ])
-    end
+  def set_jersey
+    @jersey = Jersey.friendly.find(params.expect(:id))
+  end
+
+  def jersey_params
+    params.expect(jersey: [ :title, :club, :season, :size, :price, :description, :category_id ])
+  end
 end

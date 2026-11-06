@@ -1,21 +1,81 @@
-<% content_for :title, "Showing jersey" %>
+<% content_for :title, @jersey.title %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <h1 class="font-bold text-4xl">Showing jersey</h1>
-
-  <%= render @jersey %>
-  <%= button_to "Buy now · #{number_to_currency(@jersey.price)}", jersey_checkout_path(@jersey),
-        form: { data: { turbo: false } },
-        class: "mb-4 w-full sm:w-auto rounded-full bg-emerald-600 px-8 py-3 text-lg font-bold text-white hover:bg-emerald-500 transition cursor-pointer" %>
-<% if current_user&.admin? %>
- <%= link_to "Edit this jersey", edit_jersey_path(@jersey), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this jersey", @jersey, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% if notice.present? %>
+  <p class="mb-6 rounded-xl bg-emerald-50 px-4 py-3 font-medium text-emerald-700"><%= notice %></p>
 <% end %>
 
-  <%= link_to "Back to jerseys", jerseys_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+<nav class="flex flex-wrap items-center gap-2 text-sm text-zinc-500">
+  <%= link_to "Shop", jerseys_path, class: "hover:text-emerald-600" %>
+  <% if @jersey.category %>
+    <span>/</span>
+    <%= link_to @jersey.category.name, jerseys_path(category: @jersey.category), class: "hover:text-emerald-600" %>
+  <% end %>
+  <span>/</span>
+  <span class="text-zinc-900"><%= @jersey.title %></span>
+</nav>
 
+<div class="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-16">
+  <div class="relative flex aspect-square items-center justify-center rounded-3xl bg-zinc-100 text-[8rem]">
+    👕
+    <% if @jersey.category %>
+      <span class="absolute left-5 top-5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm"><%= @jersey.category.name %></span>
+    <% end %>
+  </div>
+
+  <div class="flex flex-col">
+    <p class="text-sm font-semibold uppercase tracking-widest text-emerald-600">
+      <%= [@jersey.club, @jersey.season].compact_blank.join(" · ") %>
+    </p>
+    <h1 class="mt-2 text-4xl font-black leading-tight md:text-5xl"><%= @jersey.title %></h1>
+    <p class="mt-4 text-3xl font-black"><%= number_to_currency(@jersey.price) %></p>
+
+    <% if @jersey.size.present? %>
+      <div class="mt-8">
+        <p class="text-sm font-semibold text-zinc-500">Size</p>
+        <span class="mt-2 inline-flex h-12 min-w-12 items-center justify-center rounded-xl border-2 border-zinc-900 px-4 font-bold">
+          <%= @jersey.size %>
+        </span>
+        <p class="mt-2 text-sm text-zinc-500">One of one. Only this size available.</p>
+      </div>
+    <% end %>
+
+    <%= button_to "Buy now · #{number_to_currency(@jersey.price)}", jersey_checkout_path(@jersey),
+          form: { data: { turbo: false }, class: "mt-8" },
+          class: "w-full cursor-pointer rounded-full bg-emerald-600 px-8 py-4 text-lg font-bold text-white transition hover:bg-emerald-500" %>
+
+    <ul class="mt-6 space-y-2 text-sm text-zinc-600">
+      <li>🔒 Secure checkout powered by Stripe</li>
+      <li>📦 Every kit inspected before it ships</li>
+      <li>💬 Questions? Reach out anytime</li>
+    </ul>
+
+    <% if @jersey.description.present? %>
+      <div class="mt-10 border-t border-zinc-200 pt-8">
+        <h2 class="text-lg font-bold">About this jersey</h2>
+        <p class="mt-3 leading-relaxed text-zinc-600"><%= @jersey.description %></p>
+      </div>
+    <% end %>
+
+    <% if current_user&.admin? %>
+      <div class="mt-10 flex flex-wrap items-center gap-3 rounded-2xl border border-dashed border-zinc-300 p-4">
+        <span class="text-sm font-semibold text-zinc-500">Admin</span>
+        <%= link_to "Edit", edit_jersey_path(@jersey),
+              class: "rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold hover:bg-zinc-200" %>
+        <%= button_to "Delete", @jersey, method: :delete,
+              form: { data: { turbo_confirm: "Delete this jersey?" } },
+              class: "cursor-pointer rounded-full bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100" %>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<% if @related.any? %>
+  <section class="mt-20">
+    <h2 class="text-2xl font-black">
+      More from <%= @jersey.category&.name || "the shop" %>
+    </h2>
+    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <%= render partial: "jerseys/card", collection: @related, as: :jersey %>
+    </div>
+  </section>
+<% end %>

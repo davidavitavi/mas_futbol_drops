@@ -34,31 +34,15 @@
   <% end %>
 
   <% if @jerseys.any? %>
-    <div id="jerseys" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <% @jerseys.each do |jersey| %>
-        <%= link_to jersey_path(jersey), class: "group block rounded-2xl border border-zinc-200 p-6 hover:border-emerald-500 hover:shadow-lg transition" do %>
-          <div class="flex h-40 items-center justify-center rounded-xl bg-zinc-100 text-5xl group-hover:bg-emerald-50 transition">👕</div>
-          <div class="mt-4 flex items-center justify-between gap-2">
-            <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500">
-              <%= [jersey.club, jersey.season].compact_blank.join(" · ") %>
-            </p>
-            <% if jersey.category %>
-              <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700"><%= jersey.category.name %></span>
-            <% end %>
-          </div>
-          <h3 class="mt-1 text-lg font-bold group-hover:text-emerald-600"><%= jersey.title %></h3>
-          <div class="mt-3 flex items-center justify-between">
-            <span class="text-xl font-black"><%= number_to_currency(jersey.price) %></span>
-            <% if jersey.size.present? %>
-              <span class="rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold"><%= jersey.size %></span>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
+    <p class="mt-6 text-sm text-zinc-500"><%= pluralize(@jerseys.size, "jersey") %></p>
+    <div id="jerseys" class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <%= render partial: "jerseys/card", collection: @jerseys, as: :jersey %>
     </div>
   <% else %>
-    <div class="mt-8 rounded-2xl border-2 border-dashed border-zinc-300 p-12 text-center text-zinc-500">
-      No jerseys found.
+    <div class="mt-8 rounded-2xl border-2 border-dashed border-zinc-300 p-12 text-center">
+      <p class="text-lg font-semibold">No jerseys found</p>
+      <p class="mt-1 text-zinc-500">Try another league or clear your search.</p>
+      <%= link_to "View all jerseys", jerseys_path, class: "mt-4 inline-block font-bold text-emerald-600 hover:underline" %>
     </div>
   <% end %>
 </div>
