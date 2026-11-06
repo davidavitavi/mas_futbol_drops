@@ -1,0 +1,15 @@
+<div class="mx-auto max-w-xl rounded-3xl bg-zinc-950 px-8 py-16 text-center text-white">
+  <p class="text-6xl">⚽</p>
+  <h1 class="mt-6 text-4xl font-black">Thanks for your order!</h1>
+
+  <% if @checkout_session&.customer_details&.email %>
+    <p class="mt-4 text-zinc-300">
+      A receipt is headed to <span class="font-semibold text-emerald-400"><%= @checkout_session.customer_details.email %></span>.
+    </p>
+  <% else %>
+    <p class="mt-4 text-zinc-300">Your payment went through.</p>
+  <% end %>
+
+  <%= link_to "Keep shopping", jerseys_path,
+        class: "mt-8 inline-block rounded-full bg-emerald-500 px-6 py-3 font-bold text-zinc-950 hover:bg-emerald-400 transition" %>
+</div>

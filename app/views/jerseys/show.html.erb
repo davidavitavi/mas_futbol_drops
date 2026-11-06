@@ -8,7 +8,9 @@
   <h1 class="font-bold text-4xl">Showing jersey</h1>
 
   <%= render @jersey %>
-
+  <%= button_to "Buy now · #{number_to_currency(@jersey.price)}", jersey_checkout_path(@jersey),
+        form: { data: { turbo: false } },
+        class: "mb-4 w-full sm:w-auto rounded-full bg-emerald-600 px-8 py-3 text-lg font-bold text-white hover:bg-emerald-500 transition cursor-pointer" %>
 <% if current_user&.admin? %>
  <%= link_to "Edit this jersey", edit_jersey_path(@jersey), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= button_to "Destroy this jersey", @jersey, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
