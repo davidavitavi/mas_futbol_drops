@@ -1,4 +1,71 @@
-<div>
-  <h1 class="font-bold text-4xl">Pages#about</h1>
-  <p>Find me in app/views/pages/about.html.erb</p>
-</div>
+<% content_for :title, "About" %>
+
+<!-- Intro -->
+<section class="mx-auto max-w-3xl text-center">
+  <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-600">About Mas Futbol</p>
+  <h1 class="mt-4 text-5xl font-black leading-tight md:text-6xl">
+    Football shirts with a <span class="text-emerald-600">story.</span>
+  </h1>
+  <p class="mt-6 text-lg leading-relaxed text-zinc-600">
+    Mas Futbol sells retro and replica jerseys from the clubs, countries, and eras that
+    made the game what it is, picked one at a time by someone who actually wears them.
+  </p>
+</section>
+
+<!-- Story -->
+<section class="mt-20 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+  <div class="flex aspect-square items-center justify-center rounded-3xl bg-zinc-950 text-[8rem]">
+    ⚽
+  </div>
+  <div>
+    <h2 class="text-3xl font-black">How it started</h2>
+    <div class="mt-5 space-y-4 leading-relaxed text-zinc-600">
+      <p>
+        [Your story: when you got into football shirts, what first got you collecting,
+        and how that turned into selling.]
+      </p>
+      <p>
+        Mas Futbol started on Depop and grew from there. Every jersey is listed
+        individually, described honestly, and shipped with care.
+      </p>
+      <p>
+        [What makes your shop different: the eras you love, the leagues you focus on,
+        or the kind of buyer you're shopping for.]
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="mt-20">
+  <h2 class="text-center text-3xl font-black">What you can count on</h2>
+  <div class="mt-10 grid gap-6 md:grid-cols-3">
+    <div class="rounded-2xl border border-zinc-200 p-8">
+      <p class="text-3xl">🔎</p>
+      <h3 class="mt-4 text-lg font-bold">Honest listings</h3>
+      <p class="mt-2 text-zinc-600">Retro or replica, size and condition are always stated clearly. No surprises when it arrives.</p>
+    </div>
+    <div class="rounded-2xl border border-zinc-200 p-8">
+      <p class="text-3xl">📦</p>
+      <h3 class="mt-4 text-lg font-bold">Checked before shipping</h3>
+      <p class="mt-2 text-zinc-600">Every kit gets looked over before it goes out the door.</p>
+    </div>
+    <div class="rounded-2xl border border-zinc-200 p-8">
+      <p class="text-3xl">🔒</p>
+      <h3 class="mt-4 text-lg font-bold">Secure checkout</h3>
+      <p class="mt-2 text-zinc-600">Payments are handled by Stripe. Your card details never touch this site.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Call to action -->
+<section class="mt-20 rounded-3xl bg-zinc-950 px-8 py-16 text-center text-white">
+  <h2 class="text-3xl font-black md:text-4xl">Find your next kit.</h2>
+  <p class="mx-auto mt-4 max-w-xl text-zinc-300">New drops are added regularly, and most are one of one, so when they're gone, they're gone.</p>
+  <div class="mt-8 flex flex-wrap justify-center gap-4">
+    <%= link_to "Shop the drops", jerseys_path,
+          class: "rounded-full bg-emerald-500 px-6 py-3 font-bold text-zinc-950 transition hover:bg-emerald-400" %>
+    <%= link_to "Find us on Depop", "#",
+          class: "rounded-full border border-zinc-700 px-6 py-3 font-bold transition hover:border-zinc-400" %>
+  </div>
+</section>
