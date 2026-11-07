@@ -15,8 +15,12 @@ class JerseysController < ApplicationController
 
     if params[:query].present?
       query = "%#{Jersey.sanitize_sql_like(params[:query])}%"
-      @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
-    end
+            @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
+     end
+            case params[:sort]
+       when "price_asc"  then @jerseys = @jerseys.reorder(price: :asc)
+       when "price_desc" then @jerseys = @jerseys.reorder(price: :desc)
+       end
   end
 
   # GET /jerseys/:id

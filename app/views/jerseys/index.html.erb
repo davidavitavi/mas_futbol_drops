@@ -23,7 +23,17 @@
             class: [pill, category == @category ? active : inactive] %>
     <% end %>
   </div>
+  </div>
 
+  <% sorts = { "Newest" => nil, "Price: low to high" => "price_asc", "Price: high to low" => "price_desc" } %>
+  <div class="mt-4 flex flex-wrap items-center gap-2">
+    <span class="text-sm text-zinc-500">Sort:</span>
+    <% sorts.each do |label, value| %>
+      <%= link_to label, jerseys_path(category: @category, query: params[:query].presence, sort: value),
+            class: [pill, params[:sort].presence == value ? active : inactive] %>
+    <% end %>
+  </div>
+  
   <% if params[:query].present? %>
     <p class="mt-4 text-zinc-500">
       Results for "<%= params[:query] %>" ·
