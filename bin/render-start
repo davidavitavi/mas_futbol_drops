@@ -1,0 +1,6 @@
+#!/bin/bash -e
+# Start command for Render (see render.yaml).
+# Create/migrate the database first (seeds the admin and leagues on an empty
+# database), then run Puma on the port Render provides in $PORT.
+./bin/rails db:prepare
+exec ./bin/rails server

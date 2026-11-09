@@ -9,9 +9,8 @@ services:
     plan: free
     region: virginia
     healthCheckPath: /up
-    # Run Puma directly on the port Render provides ($PORT). The entrypoint runs
-    # db:prepare (migrations, plus seeds on an empty database) before it starts.
-    dockerCommand: ./bin/rails server
+    # Prepares the database, then runs Puma on the port Render provides ($PORT).
+    dockerCommand: ./bin/render-start
     envVars:
       - key: RAILS_MASTER_KEY
         sync: false

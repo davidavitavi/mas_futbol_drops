@@ -11,6 +11,7 @@ development:
 test:
   <<: *default
 
+# Production uses an in-memory cache (config/environments/production.rb), so
+# Solid Cache has no separate database here.
 production:
-  database: cache
   <<: *default
