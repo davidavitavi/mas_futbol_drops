@@ -13,17 +13,24 @@
 </nav>
 
 <div class="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-16">
-  <% photos = @jersey.photos.to_a %>
-  <div data-controller="gallery">
+  <% photos = @jersey.ordered_photos %>
+  <div data-controller="gallery"
+       data-gallery-zoom-urls-value="<%= photos.map { |photo| url_for(photo.variant(:zoom)) }.to_json %>">
     <div class="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-zinc-100 text-[8rem]">
       <% if photos.any? %>
-        <%= image_tag photos.first.variant(:large), alt: @jersey.title,
-              class: "h-full w-full object-cover", data: { gallery_target: "main" } %>
+        <% photos.each_with_index do |photo, i| %>
+          <button type="button" data-gallery-target="slide" data-action="gallery#open"
+                  aria-label="Zoom in on photo <%= i + 1 %>"
+                  class="absolute inset-0 cursor-zoom-in <%= "hidden" unless i.zero? %>">
+            <%= cropped_photo_tag @jersey, photo, :large, alt: i.zero? ? @jersey.title : "", loading: (i.zero? ? "eager" : "lazy") %>
+          </button>
+        <% end %>
+        <span class="pointer-events-none absolute bottom-4 right-4 rounded-full bg-white/90 px-3 py-1.5 text-sm font-semibold shadow-sm">🔍 Tap to zoom</span>
       <% else %>
         👕
       <% end %>
       <% if @jersey.category %>
-        <span class="absolute left-5 top-5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm"><%= @jersey.category.name %></span>
+        <span class="pointer-events-none absolute left-5 top-5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm"><%= @jersey.category.name %></span>
       <% end %>
     </div>
 
@@ -33,12 +40,40 @@
           <button type="button"
                   data-gallery-target="thumb"
                   data-action="gallery#show"
-                  data-gallery-url-param="<%= url_for(photo.variant(:large)) %>"
+                  data-gallery-index-param="<%= i %>"
                   aria-label="Show photo <%= i + 1 %> of <%= photos.size %>"
-                  class="aspect-square cursor-pointer overflow-hidden rounded-xl ring-2 ring-offset-2 transition <%= i.zero? ? "ring-emerald-500" : "ring-transparent hover:ring-zinc-300" %>">
-            <%= image_tag photo.variant(:thumb), alt: "", class: "h-full w-full object-cover" %>
+                  class="relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-zinc-100 ring-2 ring-offset-2 transition <%= i.zero? ? "ring-emerald-500" : "ring-transparent hover:ring-zinc-300" %>">
+            <%= cropped_photo_tag @jersey, photo, :thumb %>
           </button>
         <% end %>
+      </div>
+    <% end %>
+
+    <% if photos.any? %>
+      <%# Customer magnifier: the full, uncropped photo so buyers can inspect details. %>
+      <div data-gallery-target="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer"
+           data-action="keydown@window->gallery#key"
+           class="fixed inset-0 z-50 hidden flex-col bg-zinc-950/95 text-white">
+        <div class="flex items-center justify-between px-5 py-4">
+          <span class="text-sm font-semibold text-zinc-300"><span data-gallery-target="counter">1</span> / <%= photos.size %></span>
+          <button type="button" data-action="gallery#close" aria-label="Close"
+                  class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-xl hover:bg-white/20">✕</button>
+        </div>
+
+        <div class="relative min-h-0 flex-1 overflow-hidden">
+          <img data-gallery-target="zoomImage" alt="<%= @jersey.title %>" draggable="false"
+               data-action="click->gallery#toggleZoom pointermove->gallery#pan"
+               class="h-full w-full cursor-zoom-in select-none object-contain transition-transform duration-200 ease-out">
+
+          <% if photos.size > 1 %>
+            <button type="button" data-action="gallery#previous" aria-label="Previous photo"
+                    class="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-2xl hover:bg-white/20">‹</button>
+            <button type="button" data-action="gallery#next" aria-label="Next photo"
+                    class="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-2xl hover:bg-white/20">›</button>
+          <% end %>
+        </div>
+
+        <p class="px-5 py-4 text-center text-sm text-zinc-400">Tap the photo to zoom in · move around to inspect details</p>
       </div>
     <% end %>
   </div>

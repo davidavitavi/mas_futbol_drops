@@ -1,12 +1,14 @@
 <%= link_to jersey_path(jersey), class: "group block rounded-2xl border border-zinc-200 bg-white p-5 transition hover:-translate-y-1 hover:border-emerald-500 hover:shadow-xl" do %>
-  <% photos = jersey.photos.to_a %>
-  <div class="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-zinc-100 text-6xl transition group-hover:bg-emerald-50">
+  <% photos = jersey.ordered_photos %>
+  <div class="relative flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-zinc-100 text-6xl transition group-hover:bg-emerald-50">
     <% if photos.any? %>
-      <%= image_tag photos.first.variant(:card), alt: jersey.title, loading: "lazy",
-            class: "absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105" %>
+      <div class="absolute inset-0 transition duration-300 group-hover:scale-105">
+        <%= cropped_photo_tag jersey, photos.first, :card, alt: jersey.title, loading: "lazy" %>
+      </div>
       <% if photos.second %>
-        <%= image_tag photos.second.variant(:card), alt: "", loading: "lazy",
-              class: "absolute inset-0 h-full w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100" %>
+        <div class="absolute inset-0 bg-zinc-100 opacity-0 transition duration-300 group-hover:scale-105 group-hover:opacity-100">
+          <%= cropped_photo_tag jersey, photos.second, :card, loading: "lazy" %>
+        </div>
       <% end %>
     <% else %>
       👕

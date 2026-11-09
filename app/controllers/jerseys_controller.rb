@@ -47,6 +47,7 @@ class JerseysController < ApplicationController
 
     respond_to do |format|
       if @jersey.save
+        @jersey.apply_photo_crops(params[:photo_crops]) if params.key?(:photo_crops)
         format.html { redirect_to @jersey, notice: "Jersey was successfully created." }
         format.json { render :show, status: :created, location: @jersey }
       else
@@ -60,6 +61,7 @@ class JerseysController < ApplicationController
   def update
     respond_to do |format|
       if @jersey.update(jersey_params)
+        @jersey.apply_photo_crops(params[:photo_crops]) if params.key?(:photo_crops)
         format.html { redirect_to @jersey, notice: "Jersey was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @jersey }
       else
