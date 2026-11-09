@@ -13,6 +13,48 @@
     </div>
   <% end %>
 
+  <%# Depop-style photo picker: select or drop several photos at once, preview, remove. %>
+  <div data-controller="photo-upload"
+       data-photo-upload-max-value="<%= Jersey::MAX_PHOTOS %>"
+       data-photo-upload-max-bytes-value="<%= Jersey::MAX_PHOTO_SIZE %>"
+       data-photo-upload-types-value="<%= Jersey::PHOTO_TYPES.join(",") %>"
+       data-action="dragover->photo-upload#dragOver dragleave->photo-upload#dragLeave drop->photo-upload#drop"
+       class="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 transition sm:p-5">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <span class="<%= label %>">Photos</span>
+      <span class="text-sm text-zinc-500">
+        <span data-photo-upload-target="count">0</span>/<%= Jersey::MAX_PHOTOS %> · first photo is the cover
+      </span>
+    </div>
+
+    <div data-photo-upload-target="grid" class="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
+      <% jersey.photos.select(&:persisted?).each do |photo| %>
+        <div data-photo-tile class="group relative aspect-square overflow-hidden rounded-xl bg-zinc-200">
+          <%= image_tag photo.variant(:thumb), alt: "", class: "h-full w-full object-cover" %>
+          <%= hidden_field_tag "jersey[photos][]", photo.signed_id, id: nil %>
+          <span data-cover-badge class="absolute bottom-2 left-2 hidden rounded-full bg-zinc-950/80 px-2 py-0.5 text-xs font-bold text-white">Cover</span>
+          <button type="button" data-action="photo-upload#removeExisting" aria-label="Remove photo"
+                  class="absolute right-1.5 top-1.5 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/90 text-sm font-bold text-zinc-900 shadow transition hover:bg-red-500 hover:text-white">✕</button>
+        </div>
+      <% end %>
+
+      <label data-photo-upload-target="dropzone"
+             for="<%= form.field_id(:photos) %>"
+             class="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-zinc-300 bg-white text-center text-zinc-500 transition hover:border-emerald-500 hover:text-emerald-600">
+        <span class="text-3xl leading-none">+</span>
+        <span class="px-2 text-xs font-semibold">Add photos</span>
+      </label>
+    </div>
+
+    <%= form.file_field :photos, multiple: true, accept: Jersey::PHOTO_TYPES.join(","), class: "sr-only",
+          data: { photo_upload_target: "input", action: "change->photo-upload#pick" } %>
+
+    <p class="mt-3 text-sm text-zinc-500">
+      Select several at once or drag them in from a folder. JPG, PNG or WEBP, up to 10 MB each.
+    </p>
+    <p data-photo-upload-target="error" class="mt-2 hidden text-sm font-semibold text-red-600"></p>
+  </div>
+
   <div>
     <%= form.label :title, class: label %>
     <%= form.text_field :title, placeholder: "e.g. Barcelona Home 2015", class: input %>

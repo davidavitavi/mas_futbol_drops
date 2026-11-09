@@ -6,7 +6,7 @@ class JerseysController < ApplicationController
   # GET /jerseys
   def index
     @categories = Category.order(:name)
-    @jerseys = Jersey.includes(:category).order(created_at: :desc)
+    @jerseys = Jersey.includes(:category).with_attached_photos.order(created_at: :desc)
 
     if params[:category].present?
       @category = Category.friendly.find(params[:category])
@@ -25,7 +25,7 @@ class JerseysController < ApplicationController
 
   # GET /jerseys/:id
   def show
-    @related = Jersey.includes(:category)
+    @related = Jersey.includes(:category).with_attached_photos
                      .where(category_id: @jersey.category_id)
                      .where.not(id: @jersey.id)
                      .order(created_at: :desc)
@@ -86,6 +86,6 @@ class JerseysController < ApplicationController
   end
 
   def jersey_params
-    params.expect(jersey: [ :title, :club, :season, :size, :price, :description, :category_id ])
+    params.expect(jersey: [ :title, :club, :season, :size, :price, :description, :category_id, photos: [] ])
   end
 end
