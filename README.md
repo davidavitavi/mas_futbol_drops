@@ -1,24 +1,101 @@
-# README
+# Mas Futbol Drops
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An online storefront for **Mas Futbol**, my retro and replica football jersey resale business, built with Ruby on Rails 8.
 
-Things you may want to cover:
+Shoppers can browse kits by league, search, sort by price, inspect every detail of a jersey up close, and check out with Stripe. On the admin side I can list a jersey Depop-style: drop in a batch of photos, frame each one with a crop editor, and publish.
 
-* Ruby version
+![Shop page](docs/screenshots/shop.jpg)
 
-* System dependencies
+## Features
 
-* Configuration
+### For shoppers
 
-* Database creation
+- **Browse and filter**: filter by league (Premier League, La Liga, Serie A…), search by club or title, and sort by newest or price. League filters, search and sort combine, and your sort is kept as you switch leagues.
+- **Product pages** with a photo gallery and clickable thumbnails.
+- **Zoom viewer**: click any photo to open it fullscreen in full resolution, then click again to zoom 2.5× wherever you point, so buyers can check badges, tags and stitching before they buy. It supports arrow keys, Esc, and touch.
+- **Stripe Checkout** for secure payments.
+- **Readable URLs** like `/jerseys/juventus-away-1999`, via FriendlyId.
 
-* Database initialization
+### For the admin
 
-* How to run the test suite
+- **Sign in** with email and password, Google, or GitHub (Devise + OmniAuth). Accounts are linked by email, public sign-up is disabled, and only admins see the management tools.
+- **Multi-photo upload, like listing on Depop**: select several photos at once or drag a batch in from a folder. Previews appear instantly, each pick adds to the photos already chosen, any photo can be removed before saving, and the first photo is the cover. Up to 8 photos per jersey, validated on both client and server.
+- **Non-destructive crop editor**: drag to reposition and zoom in or out with a slider or scroll wheel. Only the framing is saved, so the original upload is never altered and can be re-cropped at any time.
 
-* Services (job queues, cache servers, search engines, etc.)
+<p>
+  <img src="docs/screenshots/crop-editor.jpg" alt="Crop editor" width="62%">
+  <img src="docs/screenshots/product-photo.jpg" alt="Product photo with zoom" width="36%">
+</p>
 
-* Deployment instructions
+## How the photo cropping works
 
-* ...
+The crop editor never changes the uploaded file. Each photo's framing is stored as a center point and a zoom level:
+
+```ruby
+# jerseys.photo_crops (jsonb), keyed by Active Storage blob id
+{ "12" => { "x" => 0.5, "y" => 0.42, "zoom" => 1.3 } }
+```
+
+- **Display:** `Jersey.crop_box` turns that into the photo's position and size inside a square frame, as CSS percentages. The same math runs in the Stimulus editor for the live preview, so what the admin sees while cropping is exactly what shoppers see.
+- **Image variants:** variants only *shrink* photos (`resize_to_limit`) and never crop them, so one set of variants serves every possible crop.
+- **Zoom viewer:** shoppers zoom into a separate 2400px variant of the *uncropped* photo, so nothing the seller framed out is hidden from a buyer who wants to look closely.
+
+## Tech stack
+
+| | |
+| --- | --- |
+| Framework | Ruby on Rails 8.1, Ruby 4.0 |
+| Database | PostgreSQL |
+| Frontend | Hotwire (Turbo + Stimulus), Tailwind CSS v4, Import Maps |
+| Images | Active Storage with libvips (WebP variants) |
+| Auth | Devise, OmniAuth (Google, GitHub) |
+| Payments | Stripe Checkout |
+| Other | FriendlyId, Faker seed data, Minitest, Solid Queue |
+
+## Getting started
+
+**Requirements:** Ruby 4.0.9, PostgreSQL, and libvips for image processing.
+
+```bash
+# macOS
+brew install vips
+# Ubuntu / WSL
+sudo apt install libvips-tools
+```
+
+**Set up and run:**
+
+```bash
+git clone https://github.com/davidavitavi/mas_futbol_drops.git
+cd mas_futbol_drops
+bin/setup --skip-server   # installs gems, creates the database, loads sample data
+bin/dev                   # http://localhost:3000
+```
+
+The sample data includes an admin account, `admin@masfutbol.com`, with its password taken from `ADMIN_PASSWORD` (default `changeme123`), plus 30 jerseys. Note that `bin/rails db:seed` deletes all existing jerseys before re-seeding.
+
+**API keys** (optional for browsing, needed for checkout and social sign-in) live in Rails credentials. Edit them with `bin/rails credentials:edit`:
+
+```yaml
+stripe:
+  secret_key: sk_test_...
+google:
+  client_id: ...
+  client_secret: ...
+github:
+  client_id: ...
+  client_secret: ...
+```
+
+## Tests
+
+```bash
+bin/rails test
+```
+
+<details>
+<summary>More screenshots</summary>
+
+![Latest drops on the home page](docs/screenshots/latest-drops.jpg)
+
+</details>
