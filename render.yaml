@@ -1,0 +1,31 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# Free web service running the app's Dockerfile. The database (Neon) and photo
+# storage (Cloudflare R2) are free services hosted elsewhere; their credentials
+# are entered in the Render dashboard (sync: false).
+services:
+  - type: web
+    name: mas-futbol-drops
+    runtime: docker
+    plan: free
+    region: virginia
+    healthCheckPath: /up
+    # Run Puma directly on the port Render provides ($PORT). The entrypoint runs
+    # db:prepare (migrations, plus seeds on an empty database) before it starts.
+    dockerCommand: ./bin/rails server
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        value: mas-futbol-photos
+      - key: RAILS_MAX_THREADS
+        value: "3"

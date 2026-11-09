@@ -1,11 +1,15 @@
-admin = User.find_or_initialize_by(email: "admin@masfutbol.com")
-admin.password = ENV.fetch("ADMIN_PASSWORD", "changeme123")
+# On a live site the admin password must be set explicitly (ADMIN_PASSWORD);
+# the "changeme123" default is only for local development.
+admin_password = ENV["ADMIN_PASSWORD"].presence
+if admin_password.nil? && Rails.env.production?
+  abort "Set the ADMIN_PASSWORD environment variable before seeding production."
+end
+
+admin = User.find_or_initialize_by(email: ENV.fetch("ADMIN_EMAIL", "admin@masfutbol.com"))
+admin.password = admin_password || "changeme123"
 admin.admin = true
 admin.save!
 puts "Admin ready: #{admin.email}"
-
-puts "Clearing jerseys..."
-Jersey.destroy_all
 
 CLUBS_BY_LEAGUE = {
   "Premier League" => [ "Arsenal", "Chelsea", "Liverpool", "Manchester United", "Manchester City", "Tottenham Hotspur", "Newcastle United" ],
@@ -20,6 +24,17 @@ kits  = [ "Home", "Away", "Third", "Goalkeeper", "Retro" ]
 sizes = %w[S M L XL XXL]
 
 categories = CLUBS_BY_LEAGUE.keys.index_with { |name| Category.find_or_create_by!(name: name) }
+puts "Leagues ready: #{categories.keys.join(", ")}"
+
+# Fake demo jerseys are for local development only. On the live site, real listings
+# are added through the admin. (Faker isn't installed in production either.)
+if Rails.env.production?
+  puts "Production: skipping demo jerseys"
+  return
+end
+
+puts "Clearing jerseys..."
+Jersey.destroy_all
 
 30.times do
   league, clubs = CLUBS_BY_LEAGUE.to_a.sample

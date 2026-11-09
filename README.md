@@ -87,6 +87,22 @@ github:
   client_secret: ...
 ```
 
+## Deployment
+
+The live site runs entirely on free tiers:
+
+| | Service | Why |
+| --- | --- | --- |
+| Web app | [Render](https://render.com) (free, Docker) | Builds from the repo's `Dockerfile` using [`render.yaml`](render.yaml) |
+| Database | [Neon](https://neon.com) Postgres (free) | No expiry; one database via `DATABASE_URL` |
+| Photos | [Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/) (free) | Render's disk is wiped on every deploy |
+
+Production keeps the moving parts small for a single free server: caching, background jobs and Action Cable run in memory instead of in Solid Cache/Queue/Cable databases. On each start, the Docker entrypoint runs `db:prepare`, which migrates the database. On a brand-new database it also seeds the admin account and leagues; the admin password comes from `ADMIN_PASSWORD`, and no demo data is created.
+
+Environment variables set in Render: `RAILS_MASTER_KEY`, `DATABASE_URL`, `ADMIN_PASSWORD`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and `R2_BUCKET`.
+
+> Free Render services sleep after 15 minutes without traffic, so the first visit after a quiet period takes about a minute to load.
+
 ## Tests
 
 ```bash

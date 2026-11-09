@@ -1,7 +1,9 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+# If running the rails server then create or migrate existing database.
+# Matches however the command is passed (e.g. "./bin/thrust ./bin/rails server",
+# or Render's start command "./bin/rails server").
+if [[ "$*" == *"rails server"* ]]; then
   ./bin/rails db:prepare
 fi
 

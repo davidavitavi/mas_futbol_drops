@@ -72,33 +72,11 @@ test:
 # the values provided in this file. Alternatively, you can specify a connection
 # URL environment variable explicitly:
 #
-#   production:
-#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
-#
-# Connection URLs for non-primary databases can also be configured using
-# environment variables. The variable name is formed by concatenating the
-# connection name with `_DATABASE_URL`. For example:
-#
-#   CACHE_DATABASE_URL="postgres://cacheuser:cachepass@localhost/cachedatabase"
-#
-# Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full overview on how database connection configuration can be specified.
-#
+#   # Production uses a single PostgreSQL database (Neon), given by DATABASE_URL.
+# Cache, jobs and Action Cable run in memory (see config/environments/production.rb
+# and config/cable.yml), so the extra Solid Cache/Queue/Cable databases aren't needed
+# for this single small server.
 production:
-  primary: &primary_production
+  primary:
     <<: *default
-    database: mas_futbol_drops_production
-    username: mas_futbol_drops
-    password: <%= ENV["MAS_FUTBOL_DROPS_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: mas_futbol_drops_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: mas_futbol_drops_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: mas_futbol_drops_production_cable
-    migrations_paths: db/cable_migrate
+    url: <%= ENV["DATABASE_URL"] %>
