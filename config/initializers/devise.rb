@@ -284,15 +284,18 @@ Devise.setup do |config|
   #   warden_config.intercept_401 = false
   #   warden_config.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+  # OAuth keys come from environment variables when set (the live site, whose GitHub
+  # OAuth app has its own callback URL), otherwise from Rails credentials (local dev).
+  credentials = Rails.application.credentials
+
   config.omniauth :github,
-                  Rails.application.credentials.dig(:github, :client_id),
-                  Rails.application.credentials.dig(:github, :client_secret),
+                  ENV.fetch("GITHUB_CLIENT_ID") { credentials.dig(:github, :client_id) },
+                  ENV.fetch("GITHUB_CLIENT_SECRET") { credentials.dig(:github, :client_secret) },
                   scope: "user:email"
 
-
-                    config.omniauth :google_oauth2,
-                  Rails.application.credentials.dig(:google, :client_id),
-                  Rails.application.credentials.dig(:google, :client_secret)
+  config.omniauth :google_oauth2,
+                  ENV.fetch("GOOGLE_CLIENT_ID") { credentials.dig(:google, :client_id) },
+                  ENV.fetch("GOOGLE_CLIENT_SECRET") { credentials.dig(:google, :client_secret) }
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
   # is mountable, there are some extra configurations to be taken into account.

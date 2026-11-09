@@ -102,7 +102,7 @@ The live site runs entirely on free tiers:
 
 Production keeps the moving parts small for a single free server: caching, background jobs and Action Cable run in memory instead of in Solid Cache/Queue/Cable databases. On each start, the Docker entrypoint runs `db:prepare`, which migrates the database. On a brand-new database it also seeds the admin account and leagues; the admin password comes from `ADMIN_PASSWORD`, and no demo data is created.
 
-Environment variables set in Render: `RAILS_MASTER_KEY`, `DATABASE_URL`, `ADMIN_PASSWORD`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and `R2_BUCKET`.
+Environment variables set in Render: `RAILS_MASTER_KEY`, `DATABASE_URL`, `ADMIN_PASSWORD`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and `R2_BUCKET`. The live site also has its own GitHub OAuth app, whose keys are set as `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. These override the credentials file, and `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` work the same way if ever needed.
 
 > Free Render services sleep after 15 minutes without traffic, so the first visit after a quiet period takes about a minute to load.
 
