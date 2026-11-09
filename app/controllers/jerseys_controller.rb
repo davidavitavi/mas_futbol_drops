@@ -15,12 +15,15 @@ class JerseysController < ApplicationController
 
     if params[:query].present?
       query = "%#{Jersey.sanitize_sql_like(params[:query])}%"
-            @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
-     end
-            case params[:sort]
-       when "price_asc"  then @jerseys = @jerseys.reorder(price: :asc)
-       when "price_desc" then @jerseys = @jerseys.reorder(price: :desc)
-       end
+      @jerseys = @jerseys.where("title ILIKE :q OR club ILIKE :q", q: query)
+    end
+
+    # Jerseys without a price always go last, whichever way you sort.
+    price = Jersey.arel_table[:price]
+    case params[:sort]
+    when "price_asc"  then @jerseys = @jerseys.reorder(price.asc.nulls_last)
+    when "price_desc" then @jerseys = @jerseys.reorder(price.desc.nulls_last)
+    end
   end
 
   # GET /jerseys/:id

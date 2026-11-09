@@ -16,13 +16,12 @@
   <% inactive = "bg-zinc-100 text-zinc-700 hover:bg-zinc-200" %>
 
   <div class="mt-6 flex flex-wrap gap-2">
-    <%= link_to "All", jerseys_path(query: params[:query].presence),
+    <%= link_to "All", jerseys_path(query: params[:query].presence, sort: params[:sort].presence),
           class: [pill, @category.nil? ? active : inactive] %>
     <% @categories.each do |category| %>
-      <%= link_to category.name, jerseys_path(category: category, query: params[:query].presence),
+      <%= link_to category.name, jerseys_path(category: category, query: params[:query].presence, sort: params[:sort].presence),
             class: [pill, category == @category ? active : inactive] %>
     <% end %>
-  </div>
   </div>
 
   <% sorts = { "Newest" => nil, "Price: low to high" => "price_asc", "Price: high to low" => "price_desc" } %>
@@ -33,11 +32,11 @@
             class: [pill, params[:sort].presence == value ? active : inactive] %>
     <% end %>
   </div>
-  
+
   <% if params[:query].present? %>
     <p class="mt-4 text-zinc-500">
       Results for "<%= params[:query] %>" ·
-      <%= link_to "Clear search", jerseys_path(category: @category), class: "font-semibold text-emerald-600 hover:underline" %>
+      <%= link_to "Clear search", jerseys_path(category: @category, sort: params[:sort].presence), class: "font-semibold text-emerald-600 hover:underline" %>
     </p>
   <% end %>
 
