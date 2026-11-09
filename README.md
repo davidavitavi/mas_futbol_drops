@@ -4,6 +4,9 @@ An online storefront for **Mas Futbol**, my retro and replica football jersey re
 
 Shoppers can browse kits by league, search, sort by price, inspect every detail of a jersey up close, and check out with Stripe. On the admin side I can list a jersey Depop-style: drop in a batch of photos, frame each one with a crop editor, and publish.
 
+**Live demo: [mas-futbol-drops.onrender.com](https://mas-futbol-drops.onrender.com)**  
+<sub>Hosted on a free plan, so the first visit after a quiet spell can take about a minute to wake up.</sub>
+
 ![Shop page](docs/screenshots/shop.jpg)
 
 ## Features
