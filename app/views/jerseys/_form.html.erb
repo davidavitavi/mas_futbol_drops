@@ -30,7 +30,7 @@
     <div data-photo-upload-target="grid" class="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
       <% jersey.ordered_photos.select(&:persisted?).each do |photo| %>
         <div data-photo-tile data-crop-src="<%= url_for(photo.variant(:large)) %>"
-             class="group relative aspect-square overflow-hidden rounded-xl bg-zinc-200">
+             class="group relative aspect-square overflow-hidden rounded-xl border border-zinc-200 bg-white">
           <%= cropped_photo_tag jersey, photo, :thumb, data: { tile_image: true } %>
           <%= hidden_field_tag "jersey[photos][]", photo.signed_id, id: nil %>
           <%= hidden_field_tag "photo_crops[]", jersey.crop_for(photo).values_at("x", "y", "zoom").join(","), id: nil, data: { crop_input: true } %>
@@ -70,12 +70,12 @@
 
         <div data-photo-upload-target="cropFrame"
              data-action="pointerdown->photo-upload#cropStart wheel->photo-upload#cropWheel:!passive"
-             class="relative mt-4 aspect-square cursor-grab touch-none select-none overflow-hidden rounded-2xl bg-zinc-100 active:cursor-grabbing">
+             class="relative mt-4 aspect-square cursor-grab touch-none select-none overflow-hidden rounded-2xl bg-white ring-1 ring-zinc-200 active:cursor-grabbing">
           <img data-photo-upload-target="cropImage" alt="" draggable="false"
                class="pointer-events-none absolute max-w-none">
           <%# rule-of-thirds guides %>
           <div class="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3">
-            <% 9.times do %><div class="border border-white/40"></div><% end %>
+            <% 9.times do %><div class="border border-zinc-400/25"></div><% end %>
           </div>
         </div>
 

@@ -230,7 +230,7 @@ export default class extends Controller {
     tile.dataset.newPhoto = ""
     tile.dataset.index = index
     tile.dataset.cropSrc = url
-    tile.className = "group relative aspect-square overflow-hidden rounded-xl bg-zinc-200"
+    tile.className = "group relative aspect-square overflow-hidden rounded-xl border border-zinc-200 bg-white"
 
     const img = document.createElement("img")
     img.src = url

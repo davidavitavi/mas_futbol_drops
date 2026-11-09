@@ -16,7 +16,7 @@
   <% photos = @jersey.ordered_photos %>
   <div data-controller="gallery"
        data-gallery-zoom-urls-value="<%= photos.map { |photo| url_for(photo.variant(:zoom)) }.to_json %>">
-    <div class="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-zinc-100 text-[8rem]">
+    <div class="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl text-[8rem] <%= photos.any? ? "border border-zinc-200 bg-white" : "bg-zinc-100" %>">
       <% if photos.any? %>
         <% photos.each_with_index do |photo, i| %>
           <button type="button" data-gallery-target="slide" data-action="gallery#open"
@@ -42,7 +42,7 @@
                   data-action="gallery#show"
                   data-gallery-index-param="<%= i %>"
                   aria-label="Show photo <%= i + 1 %> of <%= photos.size %>"
-                  class="relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-zinc-100 ring-2 ring-offset-2 transition <%= i.zero? ? "ring-emerald-500" : "ring-transparent hover:ring-zinc-300" %>">
+                  class="relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-zinc-200 bg-white ring-2 ring-offset-2 transition <%= i.zero? ? "ring-emerald-500" : "ring-transparent hover:ring-zinc-300" %>">
             <%= cropped_photo_tag @jersey, photo, :thumb %>
           </button>
         <% end %>
