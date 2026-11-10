@@ -1,5 +1,7 @@
 # Mas Futbol Drops
 
+[![CI](https://github.com/davidavitavi/mas_futbol_drops/actions/workflows/ci.yml/badge.svg)](https://github.com/davidavitavi/mas_futbol_drops/actions/workflows/ci.yml)
+
 An online storefront for **Mas Futbol**, my retro and replica football jersey resale business, built with Ruby on Rails 8.
 
 Shoppers can browse kits by league, search, sort by price, inspect every detail of a jersey up close, and check out with Stripe. On the admin side I can list a jersey Depop-style: drop in a batch of photos, frame each one with a crop editor, and publish.
