@@ -2,7 +2,7 @@ require "test_helper"
 
 class JerseyTest < ActiveSupport::TestCase
   def photo(name = "jersey.jpg", type = "image/jpeg")
-    fixture_file_upload(name, type)
+    { io: file_fixture(name).open, filename: name, content_type: type }
   end
 
   test "can save several photos at once and the first is the cover" do
