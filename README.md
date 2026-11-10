@@ -121,4 +121,6 @@ bin/rails test
 
 ![Zoom viewer for inspecting details](docs/screenshots/zoom-viewer.jpg)
 
+![Stripe checkout for a jersey](docs/screenshots/checkout.jpg)
+
 </details>
