@@ -9,7 +9,7 @@ Shoppers can browse kits by league, search, sort by price, inspect every detail 
 **Live demo: [mas-futbol-drops.onrender.com](https://mas-futbol-drops.onrender.com)**  
 <sub>Hosted on a free plan, so the first visit after a quiet spell can take about a minute to wake up.</sub>
 
-![Shop page](docs/screenshots/shop.jpg)
+![Home page](docs/screenshots/home.jpg)
 
 ## Features
 
@@ -116,8 +116,6 @@ bin/rails test
 
 <details>
 <summary>More screenshots</summary>
-
-![Latest drops on the home page](docs/screenshots/latest-drops.jpg)
 
 ![A jersey's page](docs/screenshots/jersey-page.jpg)
 
