@@ -32,4 +32,16 @@ class CheckoutsControllerTest < ActionDispatch::IntegrationTest
       assert_equal jersey_url(jersey), sent.call[:cancel_url]
     end
   end
+
+  test "won't start a checkout for a sold jersey" do
+    jersey = jerseys(:brazil_home)
+    jersey.mark_sold!
+
+    with_fake_stripe do |sent|
+      post jersey_checkout_url(jersey)
+
+      assert_redirected_to jersey_url(jersey)
+      assert_nil sent.call, "Stripe shouldn't be called for a sold jersey"
+    end
+  end
 end
