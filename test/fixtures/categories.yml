@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  slug: MyString
+national_teams:
+  name: National Teams
+  slug: national-teams
 
-two:
-  name: MyString
-  slug: MyString
+serie_a:
+  name: Serie A
+  slug: serie-a

@@ -1,17 +1,30 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
-  club: MyString
-  season: MyString
-  size: MyString
-  price: 9.99
-  description: MyText
+brazil_home:
+  title: Brazil Home 1998
+  club: Brazil
+  season: "1998"
+  size: L
+  price: 85.00
+  description: Classic yellow home kit from the France '98 World Cup.
+  slug: brazil-home-1998
+  category: national_teams
 
-two:
-  title: MyString
-  club: MyString
-  season: MyString
-  size: MyString
-  price: 9.99
-  description: MyText
+milan_away:
+  title: AC Milan Away 2006
+  club: AC Milan
+  season: "2006-07"
+  size: M
+  price: 120.00
+  description: White away kit from the Champions League winning season.
+  slug: ac-milan-away-2006
+  category: serie_a
+
+no_price:
+  title: Italy Training Top
+  club: Italy
+  season: "2000"
+  size: S
+  description: Price not set yet.
+  slug: italy-training-top
+  category: national_teams
