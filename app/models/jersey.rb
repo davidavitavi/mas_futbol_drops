@@ -25,6 +25,17 @@ class Jersey < ApplicationRecord
   validates :title, presence: true
   validate :photos_are_valid
 
+  scope :available, -> { where(sold_at: nil) }
+
+  def sold?
+    sold_at.present?
+  end
+
+  # Safe to call twice: a jersey that's already sold keeps its original sale time.
+  def mark_sold!
+    update!(sold_at: Time.current) unless sold?
+  end
+
   # Where a photo sits inside a square frame, as CSS percentages of the frame.
   # Shared by the views and mirrored in photo_upload_controller.js for the live editor.
   def self.crop_box(width, height, crop)

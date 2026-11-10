@@ -95,10 +95,16 @@
       </div>
     <% end %>
 
-    <%= button_to "Buy now · #{number_to_currency(@jersey.price)}", jersey_checkout_path(@jersey),
-          form: { data: { turbo: false }, class: "mt-8" },
-          class: "w-full cursor-pointer rounded-full bg-emerald-600 px-8 py-4 text-lg font-bold text-white transition hover:bg-emerald-500" %>
-
+    <% if @jersey.sold? %>
+      <p class="mt-8 w-full rounded-full bg-zinc-200 px-8 py-4 text-center text-lg font-bold text-zinc-500">
+        Sold
+      </p>
+    <% else %>
+      <%= button_to "Buy now · #{number_to_currency(@jersey.price)}", jersey_checkout_path(@jersey),
+            form: { data: { turbo: false }, class: "mt-8" },
+            class: "w-full cursor-pointer rounded-full bg-emerald-600 px-8 py-4 text-lg font-bold text-white transition hover:bg-emerald-500" %>
+    <% end %>
+    
     <ul class="mt-6 space-y-2 text-sm text-zinc-600">
       <li>🔒 Secure checkout powered by Stripe</li>
       <li>📦 Every kit inspected before it ships</li>
