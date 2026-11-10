@@ -4,6 +4,7 @@ class CheckoutsController < ApplicationController
 
     checkout_session = Stripe::Checkout::Session.create(
       mode: "payment",
+      metadata: { jersey_id: jersey.id },
       line_items: [ {
         quantity: 1,
         price_data: {
