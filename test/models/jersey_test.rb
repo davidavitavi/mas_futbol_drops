@@ -69,4 +69,25 @@ class JerseyTest < ActiveSupport::TestCase
     assert_equal Jersey::DEFAULT_CROP, jersey.reload.crop_for(first)
     assert_equal({ "x" => 0.3, "y" => 0.6, "zoom" => 1.8 }, jersey.crop_for(second))
   end
+
+  test "a jersey isn't sold until it's marked sold" do
+    jersey = jerseys(:brazil_home)
+    assert_not jersey.sold?
+
+    jersey.mark_sold!
+    assert jersey.sold?
+    assert_not_includes Jersey.available, jersey
+  end
+
+  test "marking a jersey sold twice keeps the first sale time" do
+    jersey = jerseys(:brazil_home)
+    jersey.mark_sold!
+    first_sale = jersey.sold_at
+
+    travel 1.hour do
+      jersey.mark_sold!
+    end
+
+    assert_equal first_sale, jersey.reload.sold_at
+  end
 end
