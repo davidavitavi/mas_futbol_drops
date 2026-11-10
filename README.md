@@ -119,4 +119,8 @@ bin/rails test
 
 ![Latest drops on the home page](docs/screenshots/latest-drops.jpg)
 
+![A jersey's page](docs/screenshots/jersey-page.jpg)
+
+![Zoom viewer for inspecting details](docs/screenshots/zoom-viewer.jpg)
+
 </details>
