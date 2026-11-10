@@ -18,6 +18,11 @@
         <%= jersey.category.name %>
       </span>
     <% end %>
+    <% if jersey.sold? %>
+      <span class="absolute right-3 top-3 rounded-full bg-zinc-900 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
+        Sold
+      </span>
+    <% end %>
   </div>
 
   <p class="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">

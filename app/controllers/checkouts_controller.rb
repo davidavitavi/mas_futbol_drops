@@ -1,7 +1,7 @@
 class CheckoutsController < ApplicationController
   def create
     jersey = Jersey.friendly.find(params[:jersey_id])
-
+        return redirect_to(jersey, alert: "Sorry, this jersey has already sold.") if jersey.sold?
     checkout_session = Stripe::Checkout::Session.create(
       mode: "payment",
       metadata: { jersey_id: jersey.id },
