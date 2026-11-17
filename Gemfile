@@ -82,4 +82,4 @@ gem "omniauth-rails_csrf_protection", "~> 2.0"
 
 gem "omniauth", "~> 2.3"
 
-gem "stripe", "~> 20.1"
+gem "stripe", "~> 21.0"
