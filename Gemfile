@@ -80,6 +80,6 @@ gem "omniauth-github", "~> 2.0"
 gem "omniauth-google-oauth2", "~> 1.2"
 gem "omniauth-rails_csrf_protection", "~> 2.0"
 
-gem "omniauth", "~> 2.3"
+gem "omniauth", "~> 2.4"
 
 gem "stripe", "~> 20.1"
